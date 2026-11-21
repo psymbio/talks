@@ -1,0 +1,31 @@
+name: mouse_huddle
+description: >
+  Talk on Raam et al., "Cortical regulation of collective social dynamics
+  during environmental challenge", Nature Neuroscience 29, 901-914 (2026).
+publish_to: none
+version: 0.1.0
+
+environment:
+  sdk: ^3.0.0
+  flutter: ">=3.10.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  deck_engine:
+    path: ../../engine
+
+flutter:
+  uses-material-design: true
+  assets:
+    - images/
+  # Swap the family here (and `fontFamily` in lib/theme.dart) to change the
+  # whole deck's typeface.
+  fonts:
+    - family: Lato
+      fonts:
+        - asset: fonts/Lato-Regular.ttf
+        - asset: fonts/Lato-Bold.ttf
+          weight: 700
+        - asset: fonts/Lato-Black.ttf
+          weight: 900

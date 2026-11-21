@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Multi Image Cropper</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial;
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+        img { max-width: 100%; display: block; }
+        .crop-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 15px 0;
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+        }
+        .crop-item img {
+            width: 130px;
+            height: 100px;
+            object-fit: contain;
+        }
+        button { padding: 8px 14px; cursor: pointer; }
+        input { padding: 8px; }
+    </style>
+</head>
+
+<body>
+
+<h2>Multi Crop Image Tool</h2>
+
+<input type="file" id="upload" accept="image/*">
+
+<br><br>
+
+<div>
+    <img id="source">
+</div>
+
+<br>
+
+<button onclick="addCrop()">Add Crop</button>
+<button onclick="downloadAll()">Download All (ZIP)</button>
+
+<h3>Crops</h3>
+<div id="crops"></div>
+
+<script>
+let cropper;
+let crops = [];
+let image = document.getElementById("source");
+
+document.getElementById("upload").onchange = function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    image.src = URL.createObjectURL(file);
+
+    image.onload = () => {
+        if (cropper) cropper.destroy();
+
+        cropper = new Cropper(image, {
+            viewMode: 1,
+            autoCrop: true,
+            responsive: true
+        });
+
+        crops = [];
+        document.getElementById("crops").innerHTML = "";
+    };
+};
+
+function addCrop() {
+    if (!cropper) {
+        alert("Upload an image first!");
+        return;
+    }
+
+    const canvas = cropper.getCroppedCanvas();
+
+    if (!canvas) return;
+
+    const index = crops.length + 1;
+
+    const crop = {
+        name: `crop_${index}`,
+        data: canvas.toDataURL("image/png")
+    };
+
+    crops.push(crop);
+    renderCrops();
+}
+
+function renderCrops() {
+    const container = document.getElementById("crops");
+    container.innerHTML = "";
+
+    crops.forEach((crop, i) => {
+        const div = document.createElement("div");
+        div.className = "crop-item";
+
+        const preview = document.createElement("img");
+        preview.src = crop.data;
+
+        const name = document.createElement("input");
+        name.value = crop.name;
+        name.oninput = () => crop.name = name.value;
+
+        const download = document.createElement("button");
+        download.textContent = "Download";
+        download.onclick = () => saveCrop(crop);
+
+        const remove = document.createElement("button");
+        remove.textContent = "Remove";
+        remove.onclick = () => {
+            crops.splice(i, 1);
+            renderCrops();
+        };
+
+        div.append(preview, name, download, remove);
+        container.appendChild(div);
+    });
+}
+
+function saveCrop(crop) {
+    const link = document.createElement("a");
+    link.href = crop.data;
+    link.download = crop.name + ".png";
+    link.click();
+}
+
+async function downloadAll() {
+    if (!crops.length) return alert("No crops added!");
+
+    const zip = new JSZip();
+
+    crops.forEach(crop => {
+        const data = crop.data.split(",")[1];
+        zip.file(crop.name + ".png", data, {base64: true});
+    });
+
+    const blob = await zip.generateAsync({type: "blob"});
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "cropped_images.zip";
+    link.click();
+}
+</script>
+
+</body>
+</html>

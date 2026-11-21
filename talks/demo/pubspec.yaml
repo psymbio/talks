@@ -1,0 +1,17 @@
+name: demo_talk
+description: An example presentation built on deck_engine.
+publish_to: none
+version: 0.1.0
+
+environment:
+  sdk: ^3.0.0
+  flutter: ">=3.10.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  deck_engine:
+    path: ../../engine
+
+flutter:
+  uses-material-design: true
