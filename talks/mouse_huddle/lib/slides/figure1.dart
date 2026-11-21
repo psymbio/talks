@@ -469,7 +469,7 @@ Slide fig1_i() => Slide(
           children: [
             Expanded(
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Expanded(
                     child: Anim(
@@ -569,28 +569,34 @@ class _DesignBox extends StatelessWidget {
       for (final (i, m) in huddleStates[stateIndex].indexed)
         if (!pairOnly || i < 2) m,
     ];
+    // The arena takes whatever height is left after the two labels, and the
+    // small box is drawn at 70% of that edge — about half the area.
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(label, style: tBody.copyWith(fontWeight: FontWeight.w700)),
-        const SizedBox(height: 14),
-        FractionallySizedBox(
-          widthFactor: size,
-          child: AspectRatio(
-            aspectRatio: 1,
-            child: CustomPaint(
-              painter: ArenaPainter(
-                mice: mice,
-                fill: coldTint,
-                border: boxLine,
-                borderWidth: 8,
-                snowflake: true,
-                mouseLength: 0.21 / size,
+        const SizedBox(height: 12),
+        Expanded(
+          child: Center(
+            child: FractionallySizedBox(
+              widthFactor: size,
+              heightFactor: size,
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: CustomPaint(
+                  painter: ArenaPainter(
+                    mice: mice,
+                    fill: coldTint,
+                    border: boxLine,
+                    borderWidth: 8,
+                    snowflake: true,
+                    mouseLength: 0.21 / size,
+                  ),
+                ),
               ),
             ),
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 10),
         Text(area, style: tSmall),
       ],
     );
