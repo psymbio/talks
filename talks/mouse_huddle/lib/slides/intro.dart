@@ -410,14 +410,22 @@ class _ChallengePanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final timeline = SlideTimeline.of(context);
+    // The wind runs on its own looping clock rather than the slide's main
+    // timeline: that one finishes after a couple of seconds and would leave
+    // the streaks frozen for the rest of the slide. `reverse: false` keeps
+    // the wind blowing one way instead of ping-ponging.
+    final wind = timeline.looping(const Duration(seconds: 6),
+        name: 'storm', reverse: false);
     return ClipRRect(
       borderRadius: BorderRadius.circular(8),
       child: AnimatedBuilder(
-        animation: Listenable.merge([timeline.main, timeline.stage]),
+        animation: Listenable.merge([wind, timeline.stage]),
         builder: (context, _) => CustomPaint(
           size: Size.infinite,
           painter: _StormPainter(
-            timeline.main.value,
+            // A six-second sawtooth, read as a seconds-like clock the
+            // painter drives its phases from.
+            wind.value * 6,
             timeline.stage.value.clamp(0.0, 1.0),
           ),
         ),
@@ -429,6 +437,7 @@ class _ChallengePanel extends StatelessWidget {
 class _StormPainter extends CustomPainter {
   _StormPainter(this.seconds, this.on);
 
+  /// Runs 0 → 6 and snaps back, forever.
   final double seconds;
   final double on;
 
@@ -444,7 +453,9 @@ class _StormPainter extends CustomPainter {
       ..color = fade(Colors.white, 0.45 * on);
     for (var i = 0; i < 9; i++) {
       final y = size.height * (0.08 + 0.1 * i);
-      final phase = (seconds * 0.4 + i * 0.27) % 1.0;
+      // Three passes per six-second loop, so the streaks carry across the
+      // wrap without a jump.
+      final phase = (seconds / 2 + i * 0.27) % 1.0;
       final x = -0.3 * size.width + phase * 1.6 * size.width;
       final len = size.width * (0.1 + 0.06 * (i % 3));
       streak.strokeWidth = 4 + (i % 3) * 2;
@@ -452,7 +463,9 @@ class _StormPainter extends CustomPainter {
     }
 
     final mouseLen = size.width * 0.15;
-    final shiver = math.sin(seconds * 7) * 3.0 * on;
+    // Seven shivers per loop — again a whole number, so the wrap is
+    // invisible.
+    final shiver = math.sin(seconds / 6 * 7 * 2 * math.pi) * 3.0 * on;
 
     // Left: one mouse, exposed.
     paintMouse(
@@ -502,80 +515,76 @@ class _StormPainter extends CustomPainter {
 // Slide 2 — why the neurobiology is still open.
 // ---------------------------------------------------------------------------
 
-
 Slide whyUnknown() => Slide(
-  duration: const Duration(seconds: 3),
-  builder: (context) => SlideFrame(
-    kicker: 'The gap',
-    title: 'We know the behaviour. We do not know the circuit.',
-    source: 'Introduction, refs 9–19',
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Expanded(
-          flex: 6,
-          child: Bullets([
-            'Little is known about the neurobiology that lets an '
-                'individual adapt to the rest of its group',
-            'Group interactions are hard to study: recording and '
-                'manipulation demand constrained setups',
-            'Multi-animal tracking has only recently opened multi-agent '
-                'behaviour to neuroscience',
-          ], style: tLead),
-        ),
-        const SizedBox(width: 64),
-        Expanded(
-          flex: 5,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Anim(
-                at: 1.0,
-                child: Text(
-                  'THE UNANSWERED QUESTION',
-                  style: tSmall,
-                ),
-              ),
-              const SizedBox(height: 24),
-              Anim(
-                at: 1.3,
-                from: const Offset(26, 0),
-                child: Container(
-                  padding: const EdgeInsets.all(28),
-                  decoration: BoxDecoration(
-                    color: wash,
-                    border: Border(
-                      left: BorderSide(
-                        color: accent,
-                        width: 5,
+      duration: const Duration(seconds: 3),
+      builder: (context) => SlideFrame(
+        kicker: 'The gap',
+        title: 'We know the behaviour. We do not know the circuit.',
+        source: 'Introduction, refs 9–19',
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              flex: 6,
+              child: Bullets([
+                'Little is known about the neurobiology that lets an '
+                    'individual adapt to the rest of its group',
+                'Group interactions are hard to study: recording and '
+                    'manipulation demand constrained setups',
+                'Multi-animal tracking has only recently opened multi-agent '
+                    'behaviour to neuroscience',
+              ], style: tLead),
+            ),
+            const SizedBox(width: 64),
+            Expanded(
+              flex: 5,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Anim(
+                    at: 1.0,
+                    child: Text(
+                      'THE UNANSWERED QUESTION',
+                      style: tSmall,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Anim(
+                    at: 1.3,
+                    from: const Offset(26, 0),
+                    child: Container(
+                      padding: const EdgeInsets.all(28),
+                      decoration: const BoxDecoration(
+                        color: wash,
+                        border: Border(
+                          left: BorderSide(color: accent, width: 5),
+                        ),
+                      ),
+                      child: Text(
+                        'How does an individual brain '
+                        'adapt to the behaviour of the group?',
+                        style: tLead.copyWith(
+                          fontSize: 27,
+                          height: 1.35,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),
-                  child: Text(
-                    'How does an individual brain '
-                    'adapt to the behaviour of the group?',
-                    style: tLead.copyWith(
-                      fontSize: 27,
-                      height: 1.35,
-                      fontWeight: FontWeight.w600,
+                  const SizedBox(height: 28),
+                  const Anim(
+                    at: 1.8,
+                    child: Callout(
+                      'How a group of mammals organises its behaviour '
+                      'together is still largely unknown.',
+                      style: tNote,
                     ),
                   ),
-                ),
+                ],
               ),
-              const SizedBox(height: 28),
-              const Anim(
-                at: 1.8,
-                child: Callout(
-                  'How a group of mammals organises its behaviour '
-                  'together is still largely unknown.',
-                  style: tNote,
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
-      ],
-    ),
-  ),
-);
+      ),
+    );

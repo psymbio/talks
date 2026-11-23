@@ -12,18 +12,19 @@ import '../widgets/mouse.dart';
 // the pale silhouette is where the moving animal started, the arrow is its
 // path, and the pink dot marks the subject being scored.
 //
-// Every scene resolves to a huddle of three, the size the paper's own
-// schematic uses.
+// Every scene turns on a huddle of two: the subject and one partner. Two
+// is the smallest huddle the four definitions need, so nothing in the
+// picture distracts from who moved and who did not. Two bystanders keep
+// the group at four.
 // ---------------------------------------------------------------------------
 
 const _arenaFill = Color(0xFFE4E7EA);
 
-/// Slots in a three-animal huddle, and the two corners animals come from.
-const _slotL = (pos: Offset(0.40, 0.44), angle: -90.0);
-const _slotR = (pos: Offset(0.56, 0.44), angle: 90.0);
-const _slotB = (pos: Offset(0.48, 0.60), angle: -90.0);
-const _cornerLow = (pos: Offset(0.22, 0.82), angle: -40.0);
-const _cornerHigh = (pos: Offset(0.82, 0.18), angle: 150.0);
+/// The two places in a huddle of two, and the corners animals come from.
+const _slotL = (pos: Offset(0.42, 0.46), angle: -90.0);
+const _slotR = (pos: Offset(0.58, 0.46), angle: 90.0);
+const _cornerLow = (pos: Offset(0.24, 0.80), angle: -40.0);
+const _cornerHigh = (pos: Offset(0.80, 0.18), angle: 150.0);
 
 class _Actor {
   const _Actor({
@@ -50,24 +51,28 @@ class _Scene {
   final List<_Actor> actors;
 }
 
-/// A bystander that never moves, so each box holds four animals as in the
-/// published schematic.
-const _bystander = _Actor(
-  from: (pos: Offset(0.18, 0.20), angle: 20.0),
-  to: (pos: Offset(0.18, 0.20), angle: 20.0),
+/// Two animals that take no part in the decision, so each box holds a
+/// group of four as the assay does.
+const _bystanderA = _Actor(
+  from: (pos: Offset(0.17, 0.19), angle: 20.0),
+  to: (pos: Offset(0.17, 0.19), angle: 20.0),
+);
+const _bystanderB = _Actor(
+  from: (pos: Offset(0.80, 0.78), angle: 200.0),
+  to: (pos: Offset(0.80, 0.78), angle: 200.0),
 );
 
 const _scenes = [
   _Scene(
     'Active entry',
-    'The subject approaches a pair and joins it. Speed is high, then drops '
-        'the moment it lands in the huddle.',
+    'The subject goes to another animal and forms the huddle. Its speed is '
+        'high, then drops the moment it arrives.',
     activeColor,
     [
       _Actor(from: _slotL, to: _slotL),
-      _Actor(from: _slotR, to: _slotR),
-      _Actor(from: _cornerLow, to: _slotB, subject: true, moves: true),
-      _bystander,
+      _Actor(from: _cornerLow, to: _slotR, subject: true, moves: true),
+      _bystanderA,
+      _bystanderB,
     ],
   ),
   _Scene(
@@ -76,34 +81,33 @@ const _scenes = [
         'never changes.',
     passiveColor,
     [
-      _Actor(from: _slotL, to: _slotL),
-      _Actor(from: _slotB, to: _slotB, subject: true),
-      _Actor(from: _cornerHigh, to: _slotR, moves: true),
-      _bystander,
+      _Actor(from: _slotR, to: _slotR, subject: true),
+      _Actor(from: _cornerHigh, to: _slotL, moves: true),
+      _bystanderA,
+      _bystanderB,
     ],
   ),
   _Scene(
     'Active exit',
-    'The subject leaves the huddle of its own accord, and its speed jumps '
-        'as it goes.',
+    'The subject leaves of its own accord, and its speed jumps as it goes.',
     activeColor,
     [
       _Actor(from: _slotL, to: _slotL),
-      _Actor(from: _slotR, to: _slotR),
-      _Actor(from: _slotB, to: _cornerLow, subject: true, moves: true),
-      _bystander,
+      _Actor(from: _slotR, to: _cornerLow, subject: true, moves: true),
+      _bystanderA,
+      _bystanderB,
     ],
   ),
   _Scene(
     'Passive exit',
-    'The subject holds its place and a partner leaves, breaking the huddle '
+    'The subject holds its place and the partner leaves, ending the huddle '
         'around it.',
     passiveColor,
     [
       _Actor(from: _slotL, to: _cornerHigh, moves: true),
-      _Actor(from: _slotR, to: _slotR),
-      _Actor(from: _slotB, to: _slotB, subject: true),
-      _bystander,
+      _Actor(from: _slotR, to: _slotR, subject: true),
+      _bystanderA,
+      _bystanderB,
     ],
   ),
 ];

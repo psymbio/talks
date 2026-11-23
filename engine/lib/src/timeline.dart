@@ -118,19 +118,25 @@ class SlideTimeline {
     return stage.drive(_StepWindow(step));
   }
 
-  /// A controller that runs 0 → 1 → 0 forever with the given [period] for
-  /// each direction, created and started on first use. Use it for ambient
-  /// motion that should not need, or respond to, a click.
+  /// A controller that runs forever with the given [period], created and
+  /// started on first use. Use it for ambient motion that should not need,
+  /// or respond to, a click.
+  ///
+  /// By default it eases 0 → 1 → 0, which suits breathing and drifting.
+  /// Pass `reverse: false` for motion that must always travel the same way
+  /// — wind, rotation, a marching dash — and read the value as a sawtooth
+  /// that snaps back to 0.
   AnimationController looping(
     Duration period, {
     String name = 'default',
+    bool reverse = true,
   }) {
     final key = 'loop:$name';
     final existing = _clips[key];
     if (existing != null) return existing;
     final controller = AnimationController(vsync: _vsync, duration: period);
     _clips[key] = controller;
-    controller.repeat(reverse: true);
+    controller.repeat(reverse: reverse);
     return controller;
   }
 
