@@ -259,7 +259,8 @@ Slide huddleStateWalk() => Slide(
       builder: (context) => SlideFrame(
         kicker: 'Figure 1b–e',
         title: 'Five group states, most dispersed to most aggregated',
-        source: 'Illustration after Fig. 1b; state colours as published',
+        source: 'Illustration after Fig. 1b · click a state below to jump '
+            'to it',
         child: StageBuilder(
           builder: (context, stage) {
             final index = stage.round().clamp(0, 4);
@@ -353,48 +354,70 @@ Slide huddleStateWalk() => Slide(
       ),
     );
 
+/// One state in the strip under the arena. Clicking a chip animates the
+/// slide straight to that state, in either direction, so the states can be
+/// revisited in any order during questions.
 class _StateChip extends StatelessWidget {
   const _StateChip(this.index, this.focus);
 
   final int index;
+
+  /// 1 when this is the state on screen, 0 a whole step away.
   final double focus;
 
   @override
   Widget build(BuildContext context) {
     final color = stateColors[index];
-    return Opacity(
-      opacity: 0.4 + 0.6 * focus,
-      child: Row(
-        children: [
-          SizedBox(
-            width: 150,
-            height: 150,
-            child: CustomPaint(
-              painter: ArenaPainter(
-                mice: huddleStates[index],
-                fill: Color.lerp(warmTint, coldTint, index / 4)!,
-                border: color,
-                borderWidth: 6,
-                mouseLength: 0.22,
-              ),
+    final timeline = SlideTimeline.of(context);
+
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        // A tap here beats the deck's tap-to-advance, so chips jump rather
+        // than step.
+        onTap: () => timeline.goToStep(index),
+        child: Opacity(
+          opacity: 0.4 + 0.6 * focus,
+          child: Container(
+            padding: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
+              color: fade(color, 0.10 * focus),
+              border: Border.all(color: fade(color, focus), width: 2),
             ),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: Row(
               children: [
-                Text(
-                  stateNames[index],
-                  style: tBody.copyWith(
-                      fontWeight: FontWeight.w700, color: color),
+                SizedBox(
+                  width: 130,
+                  height: 130,
+                  child: CustomPaint(
+                    painter: ArenaPainter(
+                      mice: huddleStates[index],
+                      fill: Color.lerp(warmTint, coldTint, index / 4)!,
+                      border: color,
+                      borderWidth: 5,
+                      mouseLength: 0.22,
+                    ),
+                  ),
                 ),
-                Text(stateSubtitles[index], style: tSmall),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        stateNames[index],
+                        style: tBody.copyWith(
+                            fontWeight: FontWeight.w700, color: color),
+                      ),
+                      Text(stateSubtitles[index], style: tSmall),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }

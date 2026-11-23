@@ -70,7 +70,7 @@ class DeckController extends ChangeNotifier {
 ///
 /// Controls
 ///   click / → / Space / PageDown   next step, then next slide
-///   right-click / ← / PageUp       previous step, then previous slide
+///   ← / PageUp                     previous step, then previous slide
 ///   ↓ / ↑                          skip straight to next / previous slide
 ///   R                              restart current slide
 ///   Home / End                     first / last slide
@@ -146,14 +146,22 @@ class _DeckState extends State<Deck> {
                     child: GestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onTap: c.next,
-                      onSecondaryTap: c.previous,
-                      child: ListenableBuilder(
-                        listenable: c,
-                        builder: (context, _) => KeyedSubtree(
-                          key: ValueKey(c.epoch),
-                          child: SlideHost(
-                            slide: widget.slides[c.index](),
-                            controller: c,
+                      // Right-click is left to the platform, so the copy
+                      // menu works on selected text. Go back with the left
+                      // arrow or PageUp.
+                      // Lets the audience (and the presenter) select and
+                      // copy any text on a slide. Dragging across text
+                      // selects it instead of advancing; a plain click and
+                      // the arrow keys still move the deck.
+                      child: SelectionArea(
+                        child: ListenableBuilder(
+                          listenable: c,
+                          builder: (context, _) => KeyedSubtree(
+                            key: ValueKey(c.epoch),
+                            child: SlideHost(
+                              slide: widget.slides[c.index](),
+                              controller: c,
+                            ),
                           ),
                         ),
                       ),

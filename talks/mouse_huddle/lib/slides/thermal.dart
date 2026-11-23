@@ -586,75 +586,75 @@ Slide coreTemperature() => Slide(
 // What Figure 2 adds up to.
 // ---------------------------------------------------------------------------
 
-Slide thermalSummary() => Slide(
-      duration: const Duration(milliseconds: 2800),
-      steps: 1,
-      builder: (context) => SlideFrame(
-        kicker: 'Figure 2 · summary',
-        title: 'Contact warms the surface; the group protects the core',
-        source: 'Fig. 2 · infrared thermography and implanted loggers',
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: const [
-                  Expanded(
-                    child: ListPanel(
-                      title: 'Surface',
-                      color: warm,
-                      at: 0.3,
-                      items: [
-                        'More contacts, more peripheral warmth',
-                        'Contact regions run several °C above non-contact '
-                            'regions',
-                        'Non-contact regions warm too as the huddle grows',
-                      ],
-                    ),
-                  ),
-                  SizedBox(width: 28),
-                  Expanded(
-                    child: ListPanel(
-                      title: 'Core',
-                      color: passiveColor,
-                      at: 0.5,
-                      items: [
-                        'Alone: nearly 1 °C lost during cold exposure',
-                        'In a group: core temperature holds steady',
-                        'Pairs do this as well as larger groups',
-                      ],
-                    ),
-                  ),
-                  SizedBox(width: 28),
-                  Expanded(
-                    child: ListPanel(
-                      title: 'So why huddle bigger?',
-                      color: accent,
-                      at: 0.7,
-                      items: [
-                        'Larger huddles add surface-level warming',
-                        'The core benefit is already saturated in a pair',
-                        'Stress reduction or social reward may carry the '
-                            'rest',
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 26),
-            const Anim(
-              step: 1,
-              from: Offset(0, 20),
-              child: Callout(
-                'Huddling works by cutting heat loss through social '
-                'contact — the thermal gain is at the skin, not in the core',
-                style: tBody,
-                color: warm,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+// Slide thermalSummary() => Slide(
+//       duration: const Duration(milliseconds: 2800),
+//       steps: 1,
+//       builder: (context) => SlideFrame(
+//         kicker: 'Figure 2 · summary',
+//         title: 'Contact warms the surface; the group protects the core',
+//         source: 'Fig. 2 · infrared thermography and implanted loggers',
+//         child: Column(
+//           crossAxisAlignment: CrossAxisAlignment.stretch,
+//           children: [
+//             Expanded(
+//               child: Row(
+//                 crossAxisAlignment: CrossAxisAlignment.stretch,
+//                 children: const [
+//                   Expanded(
+//                     child: ListPanel(
+//                       title: 'Surface',
+//                       color: warm,
+//                       at: 0.3,
+//                       items: [
+//                         'More contacts, more peripheral warmth',
+//                         'Contact regions run several °C above non-contact '
+//                             'regions',
+//                         'Non-contact regions warm too as the huddle grows',
+//                       ],
+//                     ),
+//                   ),
+//                   SizedBox(width: 28),
+//                   Expanded(
+//                     child: ListPanel(
+//                       title: 'Core',
+//                       color: passiveColor,
+//                       at: 0.5,
+//                       items: [
+//                         'Alone: nearly 1 °C lost during cold exposure',
+//                         'In a group: core temperature holds steady',
+//                         'Pairs do this as well as larger groups',
+//                       ],
+//                     ),
+//                   ),
+//                   SizedBox(width: 28),
+//                   Expanded(
+//                     child: ListPanel(
+//                       title: 'So why huddle bigger?',
+//                       color: accent,
+//                       at: 0.7,
+//                       items: [
+//                         'Larger huddles add surface-level warming',
+//                         'The core benefit is already saturated in a pair',
+//                         'Stress reduction or social reward may carry the '
+//                             'rest',
+//                       ],
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//             const SizedBox(height: 26),
+//             const Anim(
+//               step: 1,
+//               from: Offset(0, 20),
+//               child: Callout(
+//                 'Huddling works by cutting heat loss through social '
+//                 'contact — the thermal gain is at the skin, not in the core',
+//                 style: tBody,
+//                 color: warm,
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );

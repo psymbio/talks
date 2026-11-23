@@ -44,12 +44,12 @@ void main() {
         fig2_fq,
         coreTemperature,
         fig2_ry,
-        thermalSummary, //     1 click:  what Figure 2 adds up to
+        // thermalSummary, //     1 click:  what Figure 2 adds up to
 
         // Figure 3: decisions
         decisions, //          5 clicks: one decision type, then the finding
         fig3_bc,
-        fig3_di,
+        // fig3_di,
         groupSizeSchematic, // 1 click:  group of four splits into pairs
         fig3_jn,
         fig3_otox,

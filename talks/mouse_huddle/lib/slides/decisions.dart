@@ -447,34 +447,34 @@ Slide fig3_bc() => Slide(
       ),
     );
 
-Slide fig3_di() => Slide(
-      duration: const Duration(milliseconds: 2400),
-      builder: (context) => const SlideFrame(
-        kicker: 'Figure 3d–i',
-        title: 'Speed tells active from passive, for entry and for exit',
-        accentColor: activeColor,
-        source: 'Raam et al. 2026, Fig. 3d–i · speed from SLEAP tracking',
-        child: Column(
-          children: [
-            Expanded(child: FigureImage('fig_3_d_to_i.png')),
-            SizedBox(height: 16),
-            Anim(
-              at: 0.9,
-              child: Bullets([
-                'Active entry: speed is high before huddle onset and drops at '
-                    'it. Active exit: speed jumps as the animal leaves',
-                'Passive decisions are flat and slow throughout — the subject '
-                    'never moves',
-                'The share of decisions that are active climbs across the '
-                    'session, for entry and exit alike',
-                'Passive is mostly a huddle-of-two affair; joining or leaving '
-                    'three or four almost always has to be active',
-              ], start: 0.9, gap: 0.16, style: tNote, color: activeColor),
-            ),
-          ],
-        ),
-      ),
-    );
+// Slide fig3_di() => Slide(
+//       duration: const Duration(milliseconds: 2400),
+//       builder: (context) => const SlideFrame(
+//         kicker: 'Figure 3d–i',
+//         title: 'Speed tells active from passive, for entry and for exit',
+//         accentColor: activeColor,
+//         source: 'Raam et al. 2026, Fig. 3d–i · speed from SLEAP tracking',
+//         child: Column(
+//           children: [
+//             Expanded(child: FigureImage('fig_3_d_to_i.png')),
+//             SizedBox(height: 16),
+//             Anim(
+//               at: 0.9,
+//               child: Bullets([
+//                 'Active entry: speed is high before huddle onset and drops at '
+//                     'it. Active exit: speed jumps as the animal leaves',
+//                 'Passive decisions are flat and slow throughout — the subject '
+//                     'never moves',
+//                 'The share of decisions that are active climbs across the '
+//                     'session, for entry and exit alike',
+//                 'Passive is mostly a huddle-of-two affair; joining or leaving '
+//                     'three or four almost always has to be active',
+//               ], start: 0.9, gap: 0.16, style: tNote, color: activeColor),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
 
 Slide fig3_jn() => Slide(
       duration: const Duration(milliseconds: 2200),

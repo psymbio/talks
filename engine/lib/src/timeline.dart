@@ -82,6 +82,16 @@ class SlideTimeline {
     return true;
   }
 
+  /// Jumps straight to [step], animating from wherever the slide is now.
+  /// Lets a slide offer its own targets — a strip of state chips, a legend,
+  /// a timeline — that the presenter can click in any order.
+  void goToStep(int step) {
+    final target = step.clamp(0, steps);
+    if (target == _step) return;
+    _step = target;
+    _seek();
+  }
+
   void _seek() {
     stage.animateTo(
       _step.toDouble(),
@@ -106,6 +116,22 @@ class SlideTimeline {
     assert(step >= 1 && step <= steps,
         'Step $step is outside this slide\'s 1..$steps steps.');
     return stage.drive(_StepWindow(step));
+  }
+
+  /// A controller that runs 0 → 1 → 0 forever with the given [period] for
+  /// each direction, created and started on first use. Use it for ambient
+  /// motion that should not need, or respond to, a click.
+  AnimationController looping(
+    Duration period, {
+    String name = 'default',
+  }) {
+    final key = 'loop:$name';
+    final existing = _clips[key];
+    if (existing != null) return existing;
+    final controller = AnimationController(vsync: _vsync, duration: period);
+    _clips[key] = controller;
+    controller.repeat(reverse: true);
+    return controller;
   }
 
   /// The named, manually driven controller [name] (created on first use).

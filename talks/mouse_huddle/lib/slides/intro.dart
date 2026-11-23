@@ -130,7 +130,7 @@ Slide title() => Slide(
               from: Offset(0, 24),
               child: IdeaBand(
                 'huddling is a group decision, and the dorsomedial '
-                'prefrontal cortex is where each mouse makes its part of it',
+                'prefrontal cortex is where each mouse decides to participate.',
                 lead: 'Claim:',
               ),
             ),
@@ -354,7 +354,7 @@ Slide whyGroups() => Slide(
                           step: 2,
                           from: Offset(0, 18),
                           child: Callout(
-                            'Social cohesion raises the odds of getting '
+                            'Staying together raises the odds of getting '
                             'through it — protection no single animal, and '
                             'no pair, can reach alone',
                             style: tNote,
@@ -502,80 +502,80 @@ class _StormPainter extends CustomPainter {
 // Slide 2 — why the neurobiology is still open.
 // ---------------------------------------------------------------------------
 
+
 Slide whyUnknown() => Slide(
-      duration: const Duration(seconds: 3),
-      builder: (context) => SlideFrame(
-        kicker: 'The gap',
-        title: 'We know the behaviour. We do not know the circuit.',
-        source: 'Introduction, refs 9–19',
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Expanded(
-              child: Bullets([
-                'Little is known about the neurobiology that lets an '
-                    'individual adapt to the rest of its group',
-                'Group interactions are hard to study: recording and '
-                    'manipulation demand constrained setups',
-                'Multi-animal tracking has only recently opened multi-agent '
-                    'behaviour to neuroscience',
-              ], style: tLead),
-            ),
-            const SizedBox(width: 60),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Anim(
-                    at: 1.1,
-                    child: Text('Where progress has been made', style: tSmall),
-                  ),
-                  const SizedBox(height: 16),
-                  for (final (i, item) in const [
-                    ('Fish', 'schooling'),
-                    ('Bats', 'group space and vocal exchange'),
-                    ('Flies', 'collective escape and defence'),
-                  ].indexed)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 14),
-                      child: Anim(
-                        at: 1.3 + i * 0.2,
-                        from: const Offset(26, 0),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 18),
-                          decoration: const BoxDecoration(
-                            color: wash,
-                            border: Border(
-                                left: BorderSide(color: accent, width: 5)),
-                          ),
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 130,
-                                child: Text(item.$1,
-                                    style: tBody.copyWith(
-                                        fontWeight: FontWeight.w600)),
-                              ),
-                              Expanded(child: Text(item.$2, style: tNote)),
-                            ],
-                          ),
-                        ),
+  duration: const Duration(seconds: 3),
+  builder: (context) => SlideFrame(
+    kicker: 'The gap',
+    title: 'We know the behaviour. We do not know the circuit.',
+    source: 'Introduction, refs 9–19',
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Expanded(
+          flex: 6,
+          child: Bullets([
+            'Little is known about the neurobiology that lets an '
+                'individual adapt to the rest of its group',
+            'Group interactions are hard to study: recording and '
+                'manipulation demand constrained setups',
+            'Multi-animal tracking has only recently opened multi-agent '
+                'behaviour to neuroscience',
+          ], style: tLead),
+        ),
+        const SizedBox(width: 64),
+        Expanded(
+          flex: 5,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Anim(
+                at: 1.0,
+                child: Text(
+                  'THE UNANSWERED QUESTION',
+                  style: tSmall,
+                ),
+              ),
+              const SizedBox(height: 24),
+              Anim(
+                at: 1.3,
+                from: const Offset(26, 0),
+                child: Container(
+                  padding: const EdgeInsets.all(28),
+                  decoration: BoxDecoration(
+                    color: wash,
+                    border: Border(
+                      left: BorderSide(
+                        color: accent,
+                        width: 5,
                       ),
                     ),
-                  const SizedBox(height: 20),
-                  const Anim(
-                    at: 2.1,
-                    child: Callout(
-                      'How a group of mammals organises its behaviour '
-                      'together is still largely unknown',
-                      style: tNote,
+                  ),
+                  child: Text(
+                    'How does an individual brain '
+                    'adapt to the behaviour of the group?',
+                    style: tLead.copyWith(
+                      fontSize: 27,
+                      height: 1.35,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
-          ],
+              const SizedBox(height: 28),
+              const Anim(
+                at: 1.8,
+                child: Callout(
+                  'How a group of mammals organises its behaviour '
+                  'together is still largely unknown.',
+                  style: tNote,
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      ],
+    ),
+  ),
+);
