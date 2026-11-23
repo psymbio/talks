@@ -65,6 +65,21 @@ class SlideTimeline {
 
   void play() => main.forward(from: 0);
 
+  /// Jumps everything to its finished state, with nothing left running:
+  /// the main timeline at its end, every step taken, every clip open and
+  /// every looping clock parked. Used when capturing a still of a slide.
+  void settle() {
+    main.stop();
+    main.value = main.upperBound;
+    _step = steps;
+    stage.stop();
+    stage.value = steps.toDouble();
+    for (final c in _clips.values) {
+      c.stop();
+      c.value = c.upperBound;
+    }
+  }
+
   /// Moves to the next step. Returns false if the slide has no steps left,
   /// in which case the deck moves on to the next slide.
   bool advance() {

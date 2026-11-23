@@ -479,7 +479,7 @@ class _StormPainter extends CustomPainter {
       'alone',
       Offset(size.width * 0.22, size.height * 0.80),
       size: 26,
-      color: ink,
+      color: Colors.white,
       weight: FontWeight.w600,
       anchor: Alignment.topCenter,
     );
@@ -501,7 +501,7 @@ class _StormPainter extends CustomPainter {
       'together',
       Offset(size.width * 0.66, size.height * 0.80),
       size: 26,
-      color: ink,
+      color: Colors.white,
       weight: FontWeight.w600,
       anchor: Alignment.topCenter,
     );

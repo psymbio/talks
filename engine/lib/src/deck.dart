@@ -20,7 +20,11 @@ class DeckController extends ChangeNotifier {
   /// on this, so a new epoch means a fresh slide with fresh animations.
   int get epoch => _epoch;
 
-  void attach(SlideTimeline timeline) => _timeline = timeline;
+  /// The clock of the slide on screen, once it has mounted. Exporters and
+  /// tooling use it to fast-forward a slide to its finished state.
+  SlideTimeline? get timeline => _timeline;
+
+  void attach(SlideTimeline newTimeline) => _timeline = newTimeline;
 
   void detach(SlideTimeline timeline) {
     if (identical(_timeline, timeline)) _timeline = null;
@@ -81,12 +85,17 @@ class Deck extends StatefulWidget {
   const Deck({
     super.key,
     required this.slides,
+    this.controller,
     this.size = const Size(1920, 1080),
     this.theme,
     this.background,
   });
 
   final List<SlideFn> slides;
+
+  /// Drive the deck from outside — an exporter, a remote, a test. When
+  /// omitted the deck makes and owns its own controller.
+  final DeckController? controller;
   final Size size;
   final ThemeData? theme;
 
@@ -104,11 +113,13 @@ class Deck extends StatefulWidget {
 }
 
 class _DeckState extends State<Deck> {
-  final _controller = DeckController();
+  late final DeckController _controller =
+      widget.controller ?? DeckController();
 
   @override
   void dispose() {
-    _controller.dispose();
+    // Only dispose a controller this deck made; a caller's outlives it.
+    if (widget.controller == null) _controller.dispose();
     super.dispose();
   }
 
