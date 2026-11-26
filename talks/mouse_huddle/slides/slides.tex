@@ -1,0 +1,43 @@
+\documentclass{article}
+
+\usepackage{graphicx}
+\usepackage[
+    paperwidth=16in,
+    paperheight=9in,
+    margin=0pt
+]{geometry}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+\newcount\n
+\n=1
+
+\loop
+    \thispagestyle{empty}
+    \noindent
+    \includegraphics[
+        width=\paperwidth,
+        height=\paperheight
+    ]{slide_0\the\n.png}
+    \newpage
+    \advance\n by 1
+\ifnum\n<10
+\repeat
+
+\n=10
+\loop
+    \thispagestyle{empty}
+    \noindent
+    \includegraphics[
+        width=\paperwidth,
+        height=\paperheight
+    ]{slide_\the\n.png}
+    \newpage
+    \advance\n by 1
+\ifnum\n<37
+\repeat
+
+\end{document}

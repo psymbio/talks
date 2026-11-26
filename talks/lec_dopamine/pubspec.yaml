@@ -1,0 +1,30 @@
+name: lec_dopamine
+description: >
+  Talk on Nakagawa et al., "Early dopamine disruption in the entorhinal cortex
+  of a knock-in model of Alzheimer's disease", Nature Neuroscience 29,
+  1386-1396 (2026).
+publish_to: none
+version: 0.1.0
+
+environment:
+  sdk: ^3.0.0
+  flutter: ">=3.10.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  deck_engine:
+    path: ../../engine
+
+flutter:
+  uses-material-design: true
+  assets:
+    - images/
+  fonts:
+    - family: Lato
+      fonts:
+        - asset: fonts/Lato-Regular.ttf
+        - asset: fonts/Lato-Bold.ttf
+          weight: 700
+        - asset: fonts/Lato-Black.ttf
+          weight: 900

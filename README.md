@@ -22,6 +22,11 @@ cd talks/mouse_huddle
 flutter run -d web-server --web-hostname 0.0.0.0 --web-port 8080
 ```
 
+```
+flutter run -d web-server --web-hostname 0.0.0.0 --web-port 8080 \
+  -t lib/export_web.dart
+```
+
 Open in browser: http://localhost:8080
 
 For access from another device on the same network, use:
